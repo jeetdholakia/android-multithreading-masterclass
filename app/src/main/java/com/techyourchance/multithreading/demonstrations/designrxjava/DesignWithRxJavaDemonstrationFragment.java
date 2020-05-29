@@ -8,15 +8,17 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.techyourchance.multithreading.R;
-import com.techyourchance.multithreading.common.BaseFragment;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+
+import com.techyourchance.multithreading.R;
+import com.techyourchance.multithreading.common.BaseFragment;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 
 public class DesignWithRxJavaDemonstrationFragment extends BaseFragment {
 
@@ -31,7 +33,8 @@ public class DesignWithRxJavaDemonstrationFragment extends BaseFragment {
 
     private ProducerConsumerBenchmarkUseCase mProducerConsumerBenchmarkUseCase;
 
-    private @Nullable Disposable mDisposable;
+    private @Nullable
+    Disposable mDisposable;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

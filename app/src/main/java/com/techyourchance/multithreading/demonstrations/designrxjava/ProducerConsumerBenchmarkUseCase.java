@@ -1,14 +1,10 @@
 package com.techyourchance.multithreading.demonstrations.designrxjava;
 
-import android.util.Log;
-
 import com.techyourchance.multithreading.DefaultConfiguration;
 
-import java.util.concurrent.Callable;
-
-import io.reactivex.Flowable;
-import io.reactivex.Observable;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class ProducerConsumerBenchmarkUseCase {
 

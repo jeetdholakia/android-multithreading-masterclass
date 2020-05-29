@@ -19,9 +19,10 @@ import java.math.BigInteger;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 
 public class SolutionExercise9Fragment extends BaseFragment {
 
@@ -38,7 +39,8 @@ public class SolutionExercise9Fragment extends BaseFragment {
 
     private ComputeFactorialUseCase mComputeFactorialUseCase;
 
-    private @Nullable Disposable mDisposable;
+    private @Nullable
+    Disposable mDisposable;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
