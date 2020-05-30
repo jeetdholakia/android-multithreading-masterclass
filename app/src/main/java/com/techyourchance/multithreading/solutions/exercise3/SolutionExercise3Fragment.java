@@ -9,12 +9,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.techyourchance.multithreading.R;
-import com.techyourchance.multithreading.common.BaseFragment;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.techyourchance.multithreading.R;
+import com.techyourchance.multithreading.common.BaseFragment;
 
 public class SolutionExercise3Fragment extends BaseFragment {
 
@@ -54,31 +54,28 @@ public class SolutionExercise3Fragment extends BaseFragment {
 
     private void countIterations() {
         mBtnCountSeconds.setEnabled(false);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 1; i <= SECONDS_TO_COUNT; i++) {
-                    final int count = i;
-                    mUiHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            mTxtCount.setText(String.valueOf(count));
-                        }
-                    });
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        return;
-                    }
-                }
+        new Thread(() -> {
+            for (int i = 1; i <= SECONDS_TO_COUNT; i++) {
+                final int count = i;
                 mUiHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        mTxtCount.setText("Done!");
-                        mBtnCountSeconds.setEnabled(true);
+                        mTxtCount.setText(String.valueOf(count));
                     }
                 });
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    return;
+                }
             }
+            mUiHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    mTxtCount.setText("Done!");
+                    mBtnCountSeconds.setEnabled(true);
+                }
+            });
         }).start();
     }
 }

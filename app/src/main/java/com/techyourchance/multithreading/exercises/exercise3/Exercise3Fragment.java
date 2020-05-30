@@ -1,18 +1,20 @@
 package com.techyourchance.multithreading.exercises.exercise3;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.techyourchance.multithreading.R;
-import com.techyourchance.multithreading.common.BaseFragment;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.techyourchance.multithreading.R;
+import com.techyourchance.multithreading.common.BaseFragment;
 
 public class Exercise3Fragment extends BaseFragment {
 
@@ -24,6 +26,8 @@ public class Exercise3Fragment extends BaseFragment {
 
     private Button mBtnCountSeconds;
     private TextView mTxtCount;
+    private Handler mainHandler = new Handler(Looper.getMainLooper());
+    private static final int ITERATIONS_COUNTER_DURATION_SEC = 10;
 
     @Nullable
     @Override
@@ -49,6 +53,29 @@ public class Exercise3Fragment extends BaseFragment {
     }
 
     private void countIterations() {
+        mBtnCountSeconds.setEnabled(false);
+        mTxtCount.setText("Loading...");
+
+        Runnable counterRunnable = () -> {
+            long startTimestamp = System.currentTimeMillis();
+            long endTimestamp = startTimestamp + ITERATIONS_COUNTER_DURATION_SEC * 1000;
+
+            int iterationsCount = 0;
+            while (System.currentTimeMillis() <= endTimestamp) {
+                iterationsCount++;
+            }
+
+            final int iterationsCountFinal = iterationsCount;
+
+            mainHandler.post(() -> {
+                mBtnCountSeconds.setEnabled(true);
+                mBtnCountSeconds.setText(String.valueOf(iterationsCountFinal));
+                mTxtCount.setText("DONE");
+            });
+        };
+
+        new Thread(counterRunnable).start();
+
         /*
         1. Disable button to prevent multiple clicks
         2. Start counting on background thread using loop and Thread.sleep()

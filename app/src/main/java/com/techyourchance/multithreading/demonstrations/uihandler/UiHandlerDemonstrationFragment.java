@@ -10,12 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.techyourchance.multithreading.R;
-import com.techyourchance.multithreading.common.BaseFragment;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.techyourchance.multithreading.R;
+import com.techyourchance.multithreading.common.BaseFragment;
 
 
 @SuppressLint("SetTextI18n")
@@ -37,12 +37,7 @@ public class UiHandlerDemonstrationFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_ui_handler_demonstration, container, false);
 
         mBtnCountIterations = view.findViewById(R.id.btn_count_iterations);
-        mBtnCountIterations.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                countIterations();
-            }
-        });
+        mBtnCountIterations.setOnClickListener(v -> countIterations());
 
         return view;
     }
