@@ -3,7 +3,6 @@ package com.techyourchance.multithreading.exercises.exercise5;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,16 +10,16 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.techyourchance.multithreading.DefaultConfiguration;
 import com.techyourchance.multithreading.R;
 import com.techyourchance.multithreading.common.BaseFragment;
 
 import java.util.LinkedList;
 import java.util.Queue;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 public class Exercise5Fragment extends BaseFragment {
 
@@ -175,8 +174,10 @@ public class Exercise5Fragment extends BaseFragment {
 
         private final int mCapacity;
         private final Queue<Integer> mQueue = new LinkedList<>();
+        private final Object QUEUE_LOCK = new Object();
 
         private int mCurrentSize = 0;
+
 
         private MyBlockingQueue(int capacity) {
             mCapacity = capacity;
@@ -189,9 +190,17 @@ public class Exercise5Fragment extends BaseFragment {
          * @param number the element to add
          */
         public void put(int number) {
-            if (mCurrentSize < mCapacity) {
+            synchronized (QUEUE_LOCK) {
+                while (mCurrentSize >= mCapacity) {
+                    try {
+                        QUEUE_LOCK.wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
                 mQueue.offer(number);
                 mCurrentSize++;
+                QUEUE_LOCK.notifyAll();
             }
         }
 
@@ -202,15 +211,19 @@ public class Exercise5Fragment extends BaseFragment {
          * @return the head of this queue
          */
         public int take() {
-            if (mCurrentSize > 0) {
-                mCurrentSize--;
-                Integer message = mQueue.poll();
-                if (message != null) {
-                    return message;
+            synchronized (QUEUE_LOCK) {
+                while (mCurrentSize <= 0) {
+                    try {
+                        QUEUE_LOCK.wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                        return 0;
+                    }
                 }
+                mCurrentSize--;
+                QUEUE_LOCK.notifyAll();
+                return mQueue.poll();
             }
-
-            return -1;
         }
     }
 }
